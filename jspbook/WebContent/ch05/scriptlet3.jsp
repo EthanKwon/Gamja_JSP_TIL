@@ -10,8 +10,8 @@
 <div align="center">
 <h2>스크립트릿 테스트2 : 1-10까지 제곱출력</h2>
 <hr>
-<table width ="200" align ="center" border = "1">
-	<thead bgcolor = "skyblue" style="color:white " ><tr><th>구분</th>
+<table align ="center" border = "1">
+	<thead bgcolor = "skyblue" style="color:white " ><tr ><th width ="40"></th>
 	<%
 		for(int i=3;i<10;i+=2){
 	%>
@@ -27,7 +27,7 @@
 				<tr><th bgcolor = "skyblue" style="color:white "><%=i %></th>
 	<%			for(int k=3;k<10;k+=2){
 	%>
-						<td> <%= i*k %> </td>
+						<td width ="40"> <%= i*k %> </td>
 	<% 
 				}
 	%>
