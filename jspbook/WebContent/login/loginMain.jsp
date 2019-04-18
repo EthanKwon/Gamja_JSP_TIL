@@ -16,21 +16,26 @@
 		td, th{ text-align: center; }
 	</style>
 </head>
-<body>
+<body><center>
 	<h3>회원 명단</h3>
 	<hr>
 	<table border="1" style="border-collapse:collapse;">
-	<tr><th>아이디</th><th>이름</th><th>생일</th><th>주소</th></tr>
+	<tr><th>아이디</th><th>이름</th><th>생일</th><th>주소</th><th>액션</th></tr>
 	<%
 	for(MemberDTO member : list){
 	%>
 	<tr><td> <%=member.getId() %> </td> 
 	<td> <%=member.getName() %> </td>
 	<td> <%=member.getBirthday() %> </td>
-	<td> <%=member.getAddress() %> </td></tr>
+	<td> <%=member.getAddress() %> </td>
+	<%
+		String uri = "MemberProcServlet?action=update&id=" + member.getId();
+	%>
+	<td><button onclick="location.href='<%=uri%>'">수정</button></td></tr>
 	<%
 	}
 	%>
 	</table>
+</center>
 </body>
 </html>

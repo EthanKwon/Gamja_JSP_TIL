@@ -29,17 +29,17 @@ public class MemberDAO {
 	
 	public int verifyIdPassword(int id, String password) {
 		System.out.println("verifyidPassword(): " + id + ", " + password);
-		String query = "select password from info_member where id=?;";
+		String query = "select hashed from info_member where id=?;";
 		PreparedStatement pStmt = null;
 		ResultSet rs = null;
-		String dbPassword = "";
+		String hashedPassword = "";
 		try {
 			pStmt = conn.prepareStatement(query);
 			pStmt.setInt(1,id);
 			rs = pStmt.executeQuery();
 			while(rs.next()) {
-				dbPassword = rs.getString(1);
-				if(dbPassword.equals(password))
+				hashedPassword = rs.getString(1);
+				if(BCrypt.checkpw(password,hashedPassword))
 					return ID_PASSWORD_MATCH;
 				else
 					return PASSWORD_IS_WRONG;
@@ -60,14 +60,17 @@ public class MemberDAO {
 	
 	
 	public void insertMember(MemberDTO member) {
-		String query = "insert into info_member (password,name,birthday,address) values(?,?,?,?);";
+		String query = "insert into info_member (password,name,birthday,address,hashed) values(?,?,?,?,?);";
 		PreparedStatement pStmt = null;
 		try {
+			String hp = BCrypt.hashpw(member.getPassword(), BCrypt.gensalt());
 			pStmt = conn.prepareStatement(query);
-			pStmt.setString(1, member.getPassword());
+			pStmt.setString(1, "*");
 			pStmt.setString(2, member.getName());
 			pStmt.setString(3, member.getBirthday());
 			pStmt.setString(4, member.getAddress());
+			pStmt.setString(5, hp);
+			
 			
 			pStmt.executeUpdate();
 		} catch (Exception e) {
@@ -81,6 +84,7 @@ public class MemberDAO {
 			}
 		}
 	}
+
 	
 	public void updateMember(MemberDTO member) {
 		String query = "update info_member set password=?, name=?, birthday=?, address=? where id=?;";
@@ -153,35 +157,44 @@ public class MemberDAO {
 		return memberList;
 	}
 	
-	public MemberDTO selectOne(int id) {
-		String query = "select * from info_member where id=?;";
-		PreparedStatement pStmt = null;
-		MemberDTO member = new MemberDTO();
-		try {
-			pStmt = conn.prepareStatement(query);
-			pStmt.setInt(1, id);
-			ResultSet rs = pStmt.executeQuery();
-			
-			while(rs.next()){
-				member.setId(rs.getInt("id"));
-				member.setPassword(rs.getString("password"));
-				member.setName(rs.getString("name"));
-				member.setBirthday(rs.getString("birthday"));
-				member.setAddress(rs.getString("address"));
+	 public MemberDTO searchById(int memberId) {
+	    	String sql = "select * from info_member where id=" + memberId + ";";
+	    	MemberDTO mDto = selectOne(sql);
+	    	return mDto;
+	    }
+	    
+	    public MemberDTO searchByName(String memberName) {
+	    	String sql = "select * from info_member where name like '" + memberName + "';";
+	    	MemberDTO mDto = selectOne(sql);
+	    	return mDto;
+	    }
+
+	    public MemberDTO selectOne(String query) {
+	    	PreparedStatement pStmt = null;
+	    	MemberDTO member = new MemberDTO();
+	    	try {
+				pStmt = conn.prepareStatement(query);
+				ResultSet rs = pStmt.executeQuery();
+				
+				while (rs.next()) {
+					member.setId(rs.getInt(1));
+					member.setPassword(rs.getString(2));
+					member.setName(rs.getString(3));
+					member.setBirthday(rs.getString(4));
+					member.setAddress(rs.getString(5));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (pStmt != null && !pStmt.isClosed()) 
+						pStmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				}
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if(pStmt != null && !pStmt.isClosed())
-					pStmt.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
-		}
-		return member;
-	}
+	    	return member;
+	    }
 
 	public void deleteMember(int id) {
 		String query = "delete from info_member where id=?;";

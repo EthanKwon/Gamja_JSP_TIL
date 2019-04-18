@@ -1,0 +1,15 @@
+
+h3{
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+form{
+  -ms-align-items: center;
+  align-items: center;
+}
+input{
+  width: 200px;
+
+
+}

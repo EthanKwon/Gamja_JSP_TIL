@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>로그인</title>
 </head>
 <body>
 <%
-	String error = request.getParameter("error");
+	String error = (String)request.getParameter("error");
 	System.out.println(error);
 	if(error != null){
 		out.println("<script>alert('" + error + "')</script>");
@@ -17,14 +17,14 @@
 	<center> <br><br>
 	<h3>Member Login</h3> <br>
 	<hr>
-	<form name="loginForm" action=/jspbook/login/loginProc.jsp method=post>
+	<form name="loginForm" action=/jspbook/login/LoginProcServlet method=post>
 		<label><span>ID : </span>
 			<input type ="text" name ="id" size="10"></label> <br><br>
 		<label><span>Password : </span>
 			<input type ="password" name ="password" size="10"></label> <br><br>
-		<label><span><input type ="submit" value ="로그인" name="B1"> &nbsp;&nbsp;</label>
-		<label><button onclick="location.href='register.html'">회원가입</button></span></label>
+		<label><input type ="submit" value ="로그인" name="B1"> &nbsp;&nbsp;</label>
 	</form>
+		<button onclick="location.href='register.html'">회원가입</button>
 	</center>
 
 </body>

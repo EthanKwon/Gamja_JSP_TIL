@@ -16,5 +16,3 @@ include_action에서 호출한 메세지입니다.<Br>
 </jsp:forward>
 </body>
 </html>
-</body>
-</html>
