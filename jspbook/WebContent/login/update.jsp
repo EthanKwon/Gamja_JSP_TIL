@@ -25,8 +25,8 @@
 			<input type ="text" name ="birthday"  value="<%=member.getBirthday()%>" size="10"></label> <br><br>
 		<label><span>Address : </span>
 			<input type ="text" name ="address" value="<%=member.getAddress()%>"  size="50"></label> <br><br>
-		<label><span></span><input type ="submit" value ="회원수정" name="B1"> &nbsp;&nbsp;
-			<input type="reset" value ="재작성" name = "B2"> </label>
+		<label><span></span><input type ="submit" value ="회원수정" name="B1"> &nbsp;&nbsp;</label>
+		<label>	<input type="reset" value ="재작성" name = "B2"> </label>
 	</form>
 
 </center>

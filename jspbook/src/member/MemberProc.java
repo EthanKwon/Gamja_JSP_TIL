@@ -27,14 +27,27 @@ public class MemberProc extends HttpServlet {
 		String action = request.getParameter("action");
 		String strId = request.getParameter("id");
 		System.out.println(action + "," + strId);
+		MemberDAO mDao = new MemberDAO();
+		RequestDispatcher rd;
+		
 		switch(action) {
+		
 		case "update":
-			MemberDAO mDao = new MemberDAO();
 			MemberDTO member = mDao.searchById(Integer.parseInt(strId));
-			
 			request.setAttribute("member", member);
-			RequestDispatcher rd = request.getRequestDispatcher("update.jsp");
+			rd = request.getRequestDispatcher("update.jsp");
 			rd.forward(request, response);
+			break;
+			
+		case "delete":
+			mDao.deleteMember(Integer.parseInt(strId));
+			String message = "id = " + strId + "(이)가 삭제 되었습니다.";
+			String url = "loginMain.jsp";
+			request.setAttribute("message", message);
+			request.setAttribute("url", url);
+			rd = request.getRequestDispatcher("alertMsg.jsp");
+			rd.forward(request, response);
+			break;
 			
 		default:
 		}
