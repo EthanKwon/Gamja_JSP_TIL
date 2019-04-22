@@ -157,19 +157,24 @@ public class MemberDAO {
 		return memberList;
 	}
 	
+	 public MemberDTO searchByNewMember() {
+	    	String sql = "select * from info_member order by id desc limit 1;";
+	    	MemberDTO mDto = selectOne(sql);
+	    	return mDto;
+	    }
 	 public MemberDTO searchById(int memberId) {
 	    	String sql = "select * from info_member where id=" + memberId + ";";
 	    	MemberDTO mDto = selectOne(sql);
 	    	return mDto;
 	    }
 	    
-	    public MemberDTO searchByName(String memberName) {
+    public MemberDTO searchByName(String memberName) {
 	    	String sql = "select * from info_member where name like '" + memberName + "';";
 	    	MemberDTO mDto = selectOne(sql);
 	    	return mDto;
 	    }
 
-	    public MemberDTO selectOne(String query) {
+    public MemberDTO selectOne(String query) {
 	    	PreparedStatement pStmt = null;
 	    	MemberDTO member = new MemberDTO();
 	    	try {

@@ -19,11 +19,13 @@
 <body><center>
 	<h3>회원 명단</h3>
 	<hr>
+	<%=(String) session.getAttribute("memberName") %> 회원님이 로그인 하셨습니다. <br>
+	<a href="/jspbook/login/MemberProcServlet?action=logout">로그아웃</a>
 	<table border="1" style="border-collapse:collapse;">
 	<tr><th>아이디</th><th>이름</th><th>생일</th><th>주소</th><th colspan=2>액션</th></tr>
 	<%
 	for(MemberDTO member : list){
-	%>
+		%>
 	<tr><td> <%=member.getId() %> </td> 
 	<td> <%=member.getName() %> </td>
 	<td> <%=member.getBirthday() %> </td>
