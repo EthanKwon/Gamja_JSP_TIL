@@ -153,13 +153,14 @@ public class MemberProc extends HttpServlet {
 			session.setAttribute("memberName", name);
 			System.out.println(member.toString());
 			
-			message = "귀하의 아이디는 " + member.getId() + " 입니다.";
+			/*message = "귀하의 아이디는 " + member.getId() + " 입니다.";
 			url = "loginMain.jsp";
 			request.setAttribute("message", message);
 			request.setAttribute("url", url);
 			rd = request.getRequestDispatcher("alertMsg.jsp");
 			rd.forward(request, response);
-			mDao.close();
+			mDao.close();*/
+//			response.sendRedirect("loginMain.jsp");
 			
 			break;
 			
@@ -178,13 +179,13 @@ public class MemberProc extends HttpServlet {
 			
 			mDao = new MemberDAO();
 			mDao.updateMember(member);
-			mDao.close();
 			
 			message = "다음과 같이 수정하였습니다. \\n" + member.toString();
 			request.setAttribute("message", message);
 			request.setAttribute("url", "loginMain.jsp");
 			rd = request.getRequestDispatcher("alertMsg.jsp");
 			rd.forward(request, response);
+			mDao.close();
 			break;
 			
 		default:
