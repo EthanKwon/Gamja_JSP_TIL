@@ -17,9 +17,10 @@
 <body>
 <div align=center>
 	<h3>My Simple Twitter!!</h3>
+	<a href="/jspbook/twitter/twitterServlet?action=logout">회원 목록으로</a>
 	<hr>
-	<form action="tweet.jsp" method="POST">
-		@<%=session.getAttribute("user") %> <input type="text" name="msg">
+	<form action="/jspbook/twitter/twitterServlet?action=msg" method="POST">
+		@<%=session.getAttribute("memberName") %> <input type="text" name="msg">
 		<input type="submit" value="Tweet">
 	</form>
 	<hr>

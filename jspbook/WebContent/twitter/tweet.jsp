@@ -15,6 +15,7 @@
 		application.setAttribute("msgs",msgs);
 	}
 	
+	
 	msgs.add(username+" :: "+ msg +" , " + new java.util.Date());
 	
 	application.log(msg+"추가됨");

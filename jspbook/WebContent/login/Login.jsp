@@ -5,6 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>로그인</title>
+<style>
+	span {
+		font-size : 20px;
+	}
+</style>
 </head>
 <body>
 <%
@@ -14,8 +19,8 @@
 		out.println("<script>alert('" + error + "')</script>");
 	}
 %>
-	<center> <br><br>
-	<h3>Member Login</h3> <br>
+	<center> <br>
+	<h2>Member Login</h2> <br>
 	<hr>
 	<form name ="loginForm" action="MemberProcServlet?action=login" method=post>
 	<!--< form name="loginForm" action=/jspbook/login/LoginProcServlet method=post> -->
@@ -25,7 +30,8 @@
 			<input type ="password" name ="password" size="10"></label> <br><br>
 		<label><input type ="submit" value ="로그인" name="B1"></label>
 	</form>
-		&nbsp;&nbsp;<button onclick="location.href='register.html'">회원가입</button>
+		&nbsp;&nbsp;
+		<br><button onclick="location.href='register.html'">회원가입</button>
 	</center>
 
 </body>

@@ -13,16 +13,27 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>메인 페이지</title>
 	<style>
-		td, th{ text-align: center; }
+		thead { background-color : #00FF00; color : #494D4A;}
+		th {
+			border: 2px solid #333333;
+			padding : 5px;
+		}
+		td, th{ text-align: center; padding :3px; }
+		
+		
 	</style>
 </head>
 <body><center>
-	<h3>회원 명단</h3>
+	<h2>회원 명단</h2>
+	<p><%=(String) session.getAttribute("memberName") %> 회원님이 로그인 하셨습니다. </p>
 	<hr>
-	<%=(String) session.getAttribute("memberName") %> 회원님이 로그인 하셨습니다. <br>
-	<a href="/jspbook/login/MemberProcServlet?action=logout">로그아웃</a>
+	<a href="/jspbook/bbs/BbsServlet?action=intoBbs">게시판</a> &nbsp; &nbsp;
+	<a href="/jspbook/twitter/twitterServlet?action=login">트윗</a>&nbsp; &nbsp;
+	<a href="/jspbook/login/MemberProcServlet?action=logout">로그아웃</a> <br><br>
 	<table border="1" style="border-collapse:collapse;">
-	<tr><th>아이디</th><th>이름</th><th>생일</th><th>주소</th><th colspan=2>액션</th></tr>
+	<thead>
+	<tr><th>아이디</th><th style="width:100px">이름</th><th style="width:130px">생일</th><th style="width:160px">주소</th><th colspan=2>액션</th></tr>
+	</thead>
 	<%
 	for(MemberDTO member : list){
 		%>

@@ -169,7 +169,6 @@ public class MemberProc extends HttpServlet {
 				id = Integer.parseInt(request.getParameter("id"));			
 			}
 			
-			id =Integer.parseInt(request.getParameter("id"));
 			name = request.getParameter("name");
 			birthday = request.getParameter("birthday");
 			address = request.getParameter("address");
