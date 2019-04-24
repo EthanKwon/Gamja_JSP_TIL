@@ -1,6 +1,8 @@
 package bbs;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class BbsDTO {
 	
@@ -60,8 +62,16 @@ public class BbsDTO {
 	}
 
 	public String getDate() {
+		Date date;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(this.date);
+			this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		return date;
+		return this.date;
 	}
 
 	public void setDate(String date) {

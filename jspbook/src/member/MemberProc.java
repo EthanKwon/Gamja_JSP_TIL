@@ -2,6 +2,8 @@ package member;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,6 +36,7 @@ public class MemberProc extends HttpServlet {
 		System.out.println(action + "," + id);
 		MemberDAO mDao = new MemberDAO();
 		MemberDTO member = new MemberDTO();
+		
 		String password = new String();
 		String name = new String();
 		String birthday = new String();
@@ -41,7 +44,59 @@ public class MemberProc extends HttpServlet {
 		String message = new String();
 		RequestDispatcher rd;
 		
+		//페이지 관련 변수
+		int pageNum = 1;
+		List<String> pageLists = new ArrayList<String>();
+		
 		switch(action) {
+		case "intoMain" :
+			request.setAttribute("page", 1);
+			session.setAttribute("MemberPage", 1);
+			
+			pageNum = 1;
+			
+			while(pageNum <= mDao.totalPage()) {
+				 pageLists.add("<a href='MemberProcServlet?action=pageButton&page="+pageNum+"'>"+pageNum+"</a>");
+				pageNum++;
+			}
+			request.setAttribute("pageList", pageLists);
+			rd = request.getRequestDispatcher("loginMain.jsp");
+			rd.forward(request, response);
+			break;
+			
+		case "pageButton" :
+			
+			int currPage = Integer.parseInt(request.getParameter("page"));
+			session.setAttribute("MemberPage", currPage);
+			
+			if(currPage>mDao.totalPage()) {
+				message = "마지막 페이지 입니다.";
+				request.setAttribute("message", message);
+				request.setAttribute("url", "MemberProcServlet?action=pageButton&page="+mDao.totalPage());
+				rd = request.getRequestDispatcher("alertMsg.jsp");
+				rd.forward(request, response);
+				mDao.close();
+				break;
+			} else if(currPage<1) {
+				message = "첫 페이지 입니다.";
+				request.setAttribute("message", message);
+				request.setAttribute("url", "MemberProcServlet?action=pageButton&page=1");
+				rd = request.getRequestDispatcher("alertMsg.jsp");
+				rd.forward(request, response);
+				mDao.close();
+				break;
+			}
+			
+			pageNum = 1;
+			while(pageNum <= mDao.totalPage()) {
+				pageLists.add("<a href='MemberProcServlet?action=pageButton&page="+pageNum+"'>"+pageNum+"</a>");
+				pageNum++;
+			}
+			request.setAttribute("pageList", pageLists);
+			request.setAttribute("page", currPage);
+			rd = request.getRequestDispatcher("loginMain.jsp");
+			rd.forward(request, response);
+			break;
 		
 		case "update":
 			if(!request.getParameter("id").equals("")) {
@@ -53,7 +108,7 @@ public class MemberProc extends HttpServlet {
 				*/
 				message = "수정권한이 없습니다. \\n";
 				request.setAttribute("message", message);
-				request.setAttribute("url", "loginMain.jsp");
+				request.setAttribute("url", "MemberProcServlet?action=pageButton&page="+session.getAttribute("MemberPage"));
 				rd = request.getRequestDispatcher("alertMsg.jsp");
 				rd.forward(request, response);
 				break;
@@ -132,6 +187,7 @@ public class MemberProc extends HttpServlet {
 		case "logout":
 			session.removeAttribute("memberId");
 			session.removeAttribute("memberName");
+			session.removeAttribute("currPage");
 			
 			response.sendRedirect("Login.jsp");
 			break;

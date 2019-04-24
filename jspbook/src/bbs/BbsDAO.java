@@ -112,17 +112,25 @@ public class BbsDAO {
 		}
 	}
 	
-	//개수를 출력
-	public int countPage() {
+	//총 페이지 수 얻기
+	public int totalPage() {
+		int pageList = 10;
 		String query = "select count(*) from bbs;";
 		PreparedStatement pStmt = null;
 		int count = 0;
+		int totalCount=0;
 		try {
 			pStmt = conn.prepareStatement(query);
 			ResultSet rs = pStmt.executeQuery();
 			
 			while(rs.next()){ //데이터베이스 속성값 오타 주의 !!
 				count = rs.getInt("count(*)");
+			}
+			
+			totalCount = count/pageList;
+			
+			if(count%pageList > 0) {
+				totalCount++;
 			}
 			
 		} catch (Exception e) {
@@ -135,7 +143,7 @@ public class BbsDAO {
 				se.printStackTrace();
 			}
 		}
-		return (count/10)+1;
+		return totalCount;
 	}
 	
 		
@@ -247,15 +255,18 @@ public class BbsDAO {
 		String sql = "select bbs.id,bbs.memberId, bbs.title, mb.name, bbs.date from bbs "
 				+ "inner join info_member as mb "
 				+ "on mb.id = bbs.memberId order by id desc;";
+		System.out.println(sql);
 		List<BbsDTO> writeList = selectNameCondition(sql);
 		return writeList;
 	}
 	
 	//페이지 구현
-	public List<BbsDTO> selectNameAllPage(int page){
+	public List<BbsDTO> selectNameAllPage(int currPage){
+		int startBbs = (currPage-1)*10;
 		String sql = "select bbs.id,bbs.memberId, bbs.title, mb.name, bbs.date from bbs "
 				+ "inner join info_member as mb "
-				+ "on mb.id = bbs.memberId where page=" + page +" order by id desc;";
+				+ "on mb.id = bbs.memberId order by id desc limit "+ startBbs+",10;";
+		System.out.println(sql);
 		List<BbsDTO> writeList = selectNameCondition(sql);
 		return writeList;
 	}

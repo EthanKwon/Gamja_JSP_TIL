@@ -3,7 +3,9 @@
 <%@ page import = "member.*" %>
 <%
 	MemberDAO mDao = new MemberDAO();
-	List<MemberDTO> list = mDao.selectAll();
+	int currPage = (Integer)request.getAttribute("page");
+	List<MemberDTO> list = mDao.selectNameAllPage(currPage);
+	List<String> listPages = (List<String>)request.getAttribute("pageList");
 	mDao.close();
 %>
  
@@ -27,12 +29,12 @@
 	<h2>회원 명단</h2>
 	<p><%=(String) session.getAttribute("memberName") %> 회원님이 로그인 하셨습니다. </p>
 	<hr>
-	<a href="/jspbook/bbs/BbsServlet?action=intoBbs">게시판</a> &nbsp; &nbsp;
+	<a href="/jspbook/bbs/BbsServlet?action=intoBoard">게시판</a> &nbsp; &nbsp;
 	<a href="/jspbook/twitter/twitterServlet?action=login">트윗</a>&nbsp; &nbsp;
 	<a href="/jspbook/login/MemberProcServlet?action=logout">로그아웃</a> <br><br>
 	<table border="1" style="border-collapse:collapse;">
 	<thead>
-	<tr><th>아이디</th><th style="width:100px">이름</th><th style="width:130px">생일</th><th style="width:160px">주소</th><th colspan=2>액션</th></tr>
+	<tr><th>아이디</th><th style="width:100px">이름</th><th style="width:130px">생일</th><th style="width:250px">주소</th><th colspan=2>액션</th></tr>
 	</thead>
 	<%
 	for(MemberDTO member : list){
@@ -50,6 +52,20 @@
 	<%
 	}
 	%>
+	<tfoot>
+	<tr>
+	<th colspan="6">
+	<%
+		String upPageURL = "MemberProcServlet?action=pageButton&page="+ (currPage+1);
+		String downPageURL = "MemberProcServlet?action=pageButton&page="+ (currPage-1);
+	%>
+	현재 페이지는 <%=currPage %>쪽 입니다.<br><br>
+	<button onclick="location.href='<%=downPageURL%>'">&lt;</button>
+	<% for(String listPage : listPages) out.print(listPage + " ");%>
+	<button onclick="location.href='<%=upPageURL%>'">&gt;</button>
+	</th>
+	</tr>
+	</tfoot>
 	</table>
 </center>
 </body>

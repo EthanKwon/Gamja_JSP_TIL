@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bbs.BbsDTO;
+
 public class MemberDAO {
 	public static final int ID_PASSWORD_MATCH = 1;
 	public static final int ID_DOES_NOT_EXIST = 2;
@@ -27,6 +29,7 @@ public class MemberDAO {
 		}
 	}
 	
+	//로그인 확인 메소드
 	public int verifyIdPassword(int id, String password) {
 		System.out.println("verifyidPassword(): " + id + ", " + password);
 		String query = "select hashed from info_member where id=?;";
@@ -58,6 +61,39 @@ public class MemberDAO {
 		return DATABASE_ERROR;
 	}
 	
+	//총 멤버 페이지수 메소드
+	public int totalPage() {
+		int pageList = 10;
+		String query = "select count(*) from info_member;";
+		PreparedStatement pStmt = null;
+		int count = 0;
+		int totalCount=0;
+		try {
+			pStmt = conn.prepareStatement(query);
+			ResultSet rs = pStmt.executeQuery();
+			
+			while(rs.next()){ //데이터베이스 속성값 오타 주의 !!
+				count = rs.getInt("count(*)");
+			}
+			
+			totalCount = count/pageList;
+			
+			if(count%pageList > 0) {
+				totalCount++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pStmt != null && !pStmt.isClosed())
+					pStmt.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+		return totalCount;
+	}
 	
 	public void insertMember(MemberDTO member) {
 		String query = "insert into info_member (password,name,birthday,address,hashed) values(?,?,?,?,?);";
@@ -126,6 +162,15 @@ public class MemberDAO {
 		String sql = "select * from info_member where name like '"+ name +"' ;";
 		List<MemberDTO> memberList = selectCondition(sql);
 		return memberList;
+	}
+	
+	//페이지에 따라 10명씩 멤버 나누기
+	public List<MemberDTO> selectNameAllPage(int currPage){
+		int startBbs = (currPage-1)*10;
+		String sql = "select * from info_member limit " +startBbs+",10;";
+		System.out.println(sql);
+		List<MemberDTO> writeList = selectCondition(sql);
+		return writeList;
 	}
 	
 	public List<MemberDTO> selectCondition(String query) {

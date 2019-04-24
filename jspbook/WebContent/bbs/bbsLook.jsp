@@ -53,7 +53,8 @@
 			</tbody>
 		</table>
 		<br>
-		<a href="bbsMain.jsp">뒤로가기</a><br>
+		<% String returnBoard = "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"); %>
+		<a href="<%=returnBoard%>">뒤로가기</a><br>
 	</center>
 </body>
 </html>
