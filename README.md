@@ -10,4 +10,13 @@
 ### 19.04.22 : JSP 내장객체 및 자바 회원가입 프로그램 servlet
 ### 19.04.23 : JSP 게시물 확인 기능 추가 (Servlet으로 구현)
 ### 19.04.24 : JSP 회원관리 및 게시물 확인 프로그램에 Paging 기능 추가
-### 19.04.25 " JSP View 파일과 Controller파일 나누기 및 textarea 폼 변경
+### 19.04.25 : 표편 언어와 JSTP 사용해서 JSP View 파일과 Controller파일 나누기 및 textarea 폼 변경
+
+---
+
+## JSP 회원 프로그램 사용 라이브러리 목록
+
+### Aphche Tomcat 사용을 위한 라이브러리 :  해당 프로젝트의 buildPath를 통해 Add library로 설정할 수 있다.
+### JSTP 사용을 위한 라이브러리 : 필요한 lib 폴더의 파일
+### MySQL 사용을 위한 라이브러리 : 필요한 lib 폴더의 파일
+
