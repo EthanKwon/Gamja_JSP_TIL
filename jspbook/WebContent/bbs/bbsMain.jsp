@@ -15,7 +15,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시판</title>
 <style>
-	thead { background-color : #00FF00; color : #494D4A;}
+	thead { background-color : #00FF00; color : #494D4A; width : 600px;}
 	th {
 		border: 2px solid #333333;
 		padding : 10px;
@@ -45,7 +45,7 @@
 	<div>
 	<table border="1" style="border-collapse:collapse;">
 	<thead>
-	<tr><th>게시번호</th><th style="width:200px">제목</th><th>글쓴이</th><th>작성날짜</th><th>액션</th></tr>
+	<tr><th>게시번호</th><th style="width:60%">제목</th><th>글쓴이</th><th>작성날짜</th><th>액션</th></tr>
 	</thead>
 	<tbody>
 	<%

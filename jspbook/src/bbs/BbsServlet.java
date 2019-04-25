@@ -12,9 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class bbsServlet
- */
+
 @WebServlet("/bbs/BbsServlet")
 public class BbsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -106,13 +104,17 @@ public class BbsServlet extends HttpServlet {
 			}
 			
 			title = request.getParameter("title");
-			content = request.getParameter("content");
+			content = lf2Br(request.getParameter("content"));
+			//문자 중간에 줄바꿈("/r")을 발견하면 <br>을 추가하는 함수를 만든다.
 			
 			bDto = new BbsDTO(title,content,memberId);
 			System.out.println(bDto.toString());
 			
 			bDao = new BbsDAO();
 			bDao.insertBbs(bDto);
+			bDao.close();
+			
+			bDto.setContent(rm2Lf(bDto.getContent()));
 			
 			message = "내용을 저장하였습니다. \\n" + bDto.toStringUpdate();
 			request.setAttribute("message", message);
@@ -124,7 +126,16 @@ public class BbsServlet extends HttpServlet {
 			
 			
 		case "look" :
-			response.sendRedirect("bbsLook.jsp?id="+request.getParameter("id"));
+			if(!request.getParameter("id").equals("")) {
+				id = Integer.parseInt(request.getParameter("id"));			
+			}
+			
+			bDto = bDao.selectOne(id);
+			bDao.close();
+			request.setAttribute("bDto", bDto);
+			rd = request.getRequestDispatcher("bbsLook.jsp");
+			rd.forward(request, response);
+			
 			break;
 			
 			
@@ -149,6 +160,11 @@ public class BbsServlet extends HttpServlet {
 			}
 			bDao = new BbsDAO();
 			bDto = bDao.selectOne(id);
+			bDao.close();
+			
+			//수정시 보여주는 게시물 내용에는 <br> html코드를 없앤 후, 뿌려준다.
+			bDto.setContent(br2Lf(bDto.getContent()));
+			
 			request.setAttribute("bbs", bDto);
 			rd = request.getRequestDispatcher("bbsUpdate.jsp");
 			rd.forward(request, response);
@@ -162,13 +178,18 @@ public class BbsServlet extends HttpServlet {
 			}
 			
 			title = request.getParameter("title");
-			content = request.getParameter("content");
+			content = lf2Br(request.getParameter("content"));
 			
 			bDto = new BbsDTO(id,title,content);
 			System.out.println(bDto.toString());
 			
 			bDao = new BbsDAO();
 			bDao.updateBbs(bDto);
+			bDao.close();
+			
+			bDto.setContent(rm2Lf(bDto.getContent()));
+			
+			System.out.println( bDto.toStringUpdate());
 			
 			message = "다음과 같이 수정하였습니다. \\n" + bDto.toStringUpdate();
 			request.setAttribute("message", message);
@@ -211,6 +232,47 @@ public class BbsServlet extends HttpServlet {
 		default:
 		}
 		
+	}
+	
+	//'/r'를 발견하면 문자열에 <br>을 추가해주는 메소드
+	protected String lf2Br(String content) {
+		StringBuffer sb = new StringBuffer();
+		for (int i=0; i<content.length(); i++) {
+			if (content.charAt(i) == '\r') { // 발견 했을 때, <br>을 넣는다.
+				sb.append("<br>");
+				sb.append(content.charAt(i));
+			} else // 발견을 못했으면 그냥 쓴다.
+				sb.append(content.charAt(i));
+		}
+		return sb.toString();
+	}
+	
+	// 문자열에서 <br>을 지워주는 메소드 
+	protected String br2Lf(String content) {
+		StringBuffer sb = new StringBuffer(content);
+		int count = 0;
+		while (true) {
+			int index = sb.indexOf("<br>", count);
+			if (index < 0)
+				break;
+			sb.delete(index, index+4);
+			count += 4;
+		}
+		return sb.toString();
+	}
+	
+	protected String rm2Lf(String content) {
+		StringBuffer sb = new StringBuffer(content);
+		int count = 0;
+		while (true) {
+			int index = sb.indexOf("<br>", count);
+			System.out.println(index);
+			if (index < 0) break;
+			sb.delete(index, index+6);
+			count += 6;
+		}
+		System.out.println(sb.toString());
+		return sb.toString();
 	}
 
 }

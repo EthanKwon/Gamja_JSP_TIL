@@ -112,10 +112,13 @@ public class BbsDTO {
 				+ " | Date :" + date + " | Content :" + content + "]";
 	}
 	
+	
+	//줄바꿈 <br> 포함시 Content 출력X
 	public String toStringUpdate() {
 		return "[ title :" + title
-				+ " | Content :" + content + "]";
+				+ " | Content : ]";
 	}
+	
 	
 	
 	

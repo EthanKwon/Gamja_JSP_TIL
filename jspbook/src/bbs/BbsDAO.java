@@ -255,7 +255,6 @@ public class BbsDAO {
 		String sql = "select bbs.id,bbs.memberId, bbs.title, mb.name, bbs.date from bbs "
 				+ "inner join info_member as mb "
 				+ "on mb.id = bbs.memberId order by id desc;";
-		System.out.println(sql);
 		List<BbsDTO> writeList = selectNameCondition(sql);
 		return writeList;
 	}

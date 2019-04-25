@@ -22,6 +22,7 @@
 	td {
 		border: 1px solid #333333;
 		padding : 5px;	
+		text-align:center
 	}
 	
 </style>
@@ -47,21 +48,23 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td style="text-align:center"><%=bDto.getId()%></td>
-					<td><input type ="text" name ="title" value="<%=bbs.getTitle() %>" size="10"></td>
-					<td style="text-align:center"><%=bDto.getName()%></td>
+					<td><%=bDto.getId()%></td>
+					<td><input type ="text" name ="title" value="<%=bbs.getTitle() %>" size="40"></td>
+					<td><%=bDto.getName()%></td>
 					<td><%=bDto.getDate()%></td>
 				</tr>
 				<tr><th class="bbsContent" colspan ="4" >게시글</th></tr>
 				<tr>
-					<td colspan ="4"><input type ="text" name ="content" value="<%=bbs.getContent()%>" style="width:400px; height:200px; word-break:break-all"></td>
+					<td colspan ="4"><textarea name="content" rows="20" cols="100"><%=bbs.getContent() %></textarea></td>
 				</tr>
 			</tbody>
-		</table>
+		</table><br>
 		
-		<label><span></span><input type ="submit" value ="회원수정" name="B1"> &nbsp;&nbsp;</label>
+		<label><span></span><input type ="submit" value ="수정" name="B1"> &nbsp;&nbsp;</label>
 		<label>	<input type="reset" value ="재작성" name = "B2"> </label>
-	</form>
+	</form><br>
+	<% String returnBoard = "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"); %>
+		<a href="<%=returnBoard%>">뒤로가기</a><br>
 
 </center>
 </body>

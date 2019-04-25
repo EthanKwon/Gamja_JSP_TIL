@@ -13,13 +13,14 @@
 	<div style="text-align:right" > 작성자 : <%=session.getAttribute("memberName") %></div>
 	<form name="insertForm" action="BbsServlet?action=insert" method=post>
 		<label><span>제목 : </span>
-			<input type ="text" name ="title" size="10"></label> <br><br>
+			<input type ="text" name ="title" size="40"></label> <br><br>
 		<label><span>내용 : </span>
-			<input type ="text" name ="content" width="50" height="50"></label> <br><br>
+			<textarea name="content" rows="10" cols="42"></textarea></label><br><br>
 		<label><span></span><input type ="submit" value ="저장" name="B1"> &nbsp;&nbsp;
 			<input type="reset" value ="재작성" name = "B2"> </label>
-	</form>
-
+	</form><br>
+	<% String returnBoard = "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"); %>
+		<a href="<%=returnBoard%>">뒤로가기</a><br>
 </center>
 </body>
 </html>

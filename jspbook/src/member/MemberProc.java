@@ -173,7 +173,7 @@ public class MemberProc extends HttpServlet {
 				session.setAttribute("memberId", id);
 				session.setAttribute("memberName", member.getName());
 				System.out.println(member.toString());
-				response.sendRedirect("loginMain.jsp");
+				response.sendRedirect("MemberProcServlet?action=intoMain");
 			} else{
 				/*request.setAttribute("error", errorMessage);
 				RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
