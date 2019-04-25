@@ -1,12 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="bbs.*"%>
 <%@ page import="bbs.*"%>   
-<%
-	int id = Integer.parseInt(request.getParameter("id"));
-	BbsDAO bDao = new BbsDAO();
-	BbsDTO bDto = bDao.selectOne(id);
-	bDao.close();
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,14 +24,11 @@
 </head>
 <body>
 <center>
-<%
-	BbsDTO bbs = (BbsDTO) request.getAttribute("bbs");
-	System.out.println(bbs.getId());
-%>
 	<h2>게시물 변경</h2>
 	<hr>
+	<c:set var="bbs" value="${requestScope.bbsOne}"/>
 	<form name="registerForm" action="BbsServlet?action=execute" method=post>
-		<input type="hidden" id="id" name="id" value ="<%=bbs.getId()%>"> 
+		<input type="hidden" id="id" name="id" value ="${bbs.id}"> 
 		<table border="1" style="border-collapse: collapse;">
 			<thead>
 				<tr>
@@ -48,14 +40,14 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td><%=bDto.getId()%></td>
-					<td><input type ="text" name ="title" value="<%=bbs.getTitle() %>" size="40"></td>
-					<td><%=bDto.getName()%></td>
-					<td><%=bDto.getDate()%></td>
+					<td>${bbs.id}</td>
+					<td><input type ="text" name ="title" value="${bbs.title}" size="40"></td>
+					<td>${bbs.name}</td>
+					<td>${bbs.date}</td>
 				</tr>
 				<tr><th class="bbsContent" colspan ="4" >게시글</th></tr>
 				<tr>
-					<td colspan ="4"><textarea name="content" rows="20" cols="100"><%=bbs.getContent() %></textarea></td>
+					<td colspan ="4"><textarea name="content" rows="20" cols="100">${bbs.content}</textarea></td>
 				</tr>
 			</tbody>
 		</table><br>
@@ -63,8 +55,7 @@
 		<label><span></span><input type ="submit" value ="수정" name="B1"> &nbsp;&nbsp;</label>
 		<label>	<input type="reset" value ="재작성" name = "B2"> </label>
 	</form><br>
-	<% String returnBoard = "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"); %>
-		<a href="<%=returnBoard%>">뒤로가기</a><br>
+		<a href="BbsServlet?action=list&page=${BoardPage}">뒤로가기</a><br>
 
 </center>
 </body>

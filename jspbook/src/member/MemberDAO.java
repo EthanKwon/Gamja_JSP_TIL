@@ -7,8 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import bbs.BbsDTO;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class MemberDAO {
 	public static final int ID_PASSWORD_MATCH = 1;
@@ -168,7 +167,6 @@ public class MemberDAO {
 	public List<MemberDTO> selectNameAllPage(int currPage){
 		int startBbs = (currPage-1)*10;
 		String sql = "select * from info_member limit " +startBbs+",10;";
-		System.out.println(sql);
 		List<MemberDTO> writeList = selectCondition(sql);
 		return writeList;
 	}

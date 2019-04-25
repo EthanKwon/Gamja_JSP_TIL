@@ -10,7 +10,7 @@
 <center>
 	<h2>게시글 작성</h2>
 	<hr>
-	<div style="text-align:right" > 작성자 : <%=session.getAttribute("memberName") %></div>
+	<div style="text-align:right" > 작성자 : ${memberName}</div>
 	<form name="insertForm" action="BbsServlet?action=insert" method=post>
 		<label><span>제목 : </span>
 			<input type ="text" name ="title" size="40"></label> <br><br>
@@ -19,8 +19,7 @@
 		<label><span></span><input type ="submit" value ="저장" name="B1"> &nbsp;&nbsp;
 			<input type="reset" value ="재작성" name = "B2"> </label>
 	</form><br>
-	<% String returnBoard = "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"); %>
-		<a href="<%=returnBoard%>">뒤로가기</a><br>
+		<a href="BbsServlet?action=list&page=${BoardPage}">뒤로가기</a><br>
 </center>
 </body>
 </html>

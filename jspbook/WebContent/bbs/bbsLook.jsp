@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*"%>
 <%@ page import="bbs.*"%>
-<%
-	BbsDTO bDto = (BbsDTO)request.getAttribute("bDto");
-	BbsDAO bDao = new BbsDAO();
-	bDao.close();
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,7 +25,7 @@
 <body>
 	<center>
 		<h2>게시글 보기</h2>
-		<p><%=(String) session.getAttribute("memberName") %> 회원님이 로그인 하셨습니다. </p>
+		<p>${memberName} 회원님이 로그인 하셨습니다. </p>
 		<hr>
 		<table border="1" style="border-collapse: collapse;">
 			<thead>
@@ -42,20 +38,20 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td style="text-align:center"><%=bDto.getId()%></td>
-					<td><%=bDto.getTitle()%></td>
-					<td style="text-align:center"><%=bDto.getName()%></td>
-					<td style="text-align:center"><%=bDto.getDate()%></td>
+				<c:set var="bbs" value="${requestScope.bDto}"/>
+					<td style="text-align:center">${bbs.id}</td>
+					<td>${bbs.title}</td>
+					<td style="text-align:center">${bbs.name}</td>
+					<td style="text-align:center">${bbs.date}</td>
 				</tr>
 				<tr><th class="bbsContent" colspan ="4" >게시글</th></tr>
 				<tr>
-					<td colspan ="4"><%=bDto.getContent() %></td>
+					<td colspan ="4">${bbs.content}</td>
 				</tr>
 			</tbody>
 		</table>
 		<br>
-		<% String returnBoard = "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"); %>
-		<a href="<%=returnBoard%>">뒤로가기</a><br>
+		<a href="BbsServlet?action=list&page=${BoardPage}">뒤로가기</a><br>
 	</center>
 </body>
 </html>

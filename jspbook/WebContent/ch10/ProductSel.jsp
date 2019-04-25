@@ -4,15 +4,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>AlertMessage</title>
+<title>ch10: EL 예제</title>
 </head>
 <body>
-<script type="text/javascript">
-	var message = '${requestScope.message}';
-	var returnUrl = '${requestScope.url}';
-	alert(message);
-	document.location.href = returnUrl;
-</script>
+<center>
+<h2>ch10: EL 예제 -상품선택</h2>
+<hr>
+1.선택한 상품은 : ${param.sel}<br>
+2.num1 +num2 =${product.num1+product.num2 }<br>
+</center>
 
 </body>
 </html>

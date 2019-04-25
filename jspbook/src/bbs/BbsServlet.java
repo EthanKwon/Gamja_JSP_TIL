@@ -49,22 +49,7 @@ public class BbsServlet extends HttpServlet {
 		
 		switch(action) {
 		
-		case "intoBoard" :
-			request.setAttribute("page", 1);
-			session.setAttribute("BoardPage", 1);
-			
-			pageNum = 1;
-			
-			while(pageNum <= bDao.totalPage()) {
-				 pageLists.add("<a href='BbsServlet?action=pageButton&page="+pageNum+"'>"+pageNum+"</a>");
-				pageNum++;
-			}
-			request.setAttribute("pageList", pageLists);
-			rd = request.getRequestDispatcher("bbsMain.jsp");
-			rd.forward(request, response);
-			break;
-			
-		case "pageButton" :
+		case "list" :
 			
 			int currPage = Integer.parseInt(request.getParameter("page"));
 			session.setAttribute("BoardPage", currPage);
@@ -72,7 +57,7 @@ public class BbsServlet extends HttpServlet {
 			if(currPage>bDao.totalPage()) {
 				message = "마지막 페이지 입니다.";
 				request.setAttribute("message", message);
-				request.setAttribute("url", "BbsServlet?action=pageButton&page="+bDao.totalPage());
+				request.setAttribute("url", "BbsServlet?action=list&page="+bDao.totalPage());
 				rd = request.getRequestDispatcher("/login/alertMsg.jsp");
 				rd.forward(request, response);
 				bDao.close();
@@ -80,7 +65,7 @@ public class BbsServlet extends HttpServlet {
 			} else if(currPage<1) {
 				message = "첫 페이지 입니다.";
 				request.setAttribute("message", message);
-				request.setAttribute("url", "BbsServlet?action=pageButton&page=1");
+				request.setAttribute("url", "BbsServlet?action=list&page=1");
 				rd = request.getRequestDispatcher("/login/alertMsg.jsp");
 				rd.forward(request, response);
 				bDao.close();
@@ -89,11 +74,14 @@ public class BbsServlet extends HttpServlet {
 			
 			pageNum = 1;
 			while(pageNum <= bDao.totalPage()) {
-				pageLists.add("<a href='BbsServlet?action=pageButton&page="+pageNum+"'>"+pageNum+"</a>");
+				pageLists.add("<a href='BbsServlet?action=list&page="+pageNum+"'>"+pageNum+"</a>");
 				pageNum++;
 			}
+			
+			List<BbsDTO> bmList = bDao.selectNameAllPage(currPage);
 			request.setAttribute("pageList", pageLists);
 			request.setAttribute("page", currPage);
+			request.setAttribute("bmList", bmList);
 			rd = request.getRequestDispatcher("bbsMain.jsp");
 			rd.forward(request, response);
 			break;
@@ -118,7 +106,7 @@ public class BbsServlet extends HttpServlet {
 			
 			message = "내용을 저장하였습니다. \\n" + bDto.toStringUpdate();
 			request.setAttribute("message", message);
-			request.setAttribute("url", "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"));
+			request.setAttribute("url", "BbsServlet?action=list&page="+session.getAttribute("BoardPage"));
 			rd = request.getRequestDispatcher("/login/alertMsg.jsp");
 			rd.forward(request, response);
 			bDao.close();
@@ -153,7 +141,7 @@ public class BbsServlet extends HttpServlet {
 				*/
 				message = "수정권한이 없습니다. \\n";
 				request.setAttribute("message", message);
-				request.setAttribute("url", "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"));
+				request.setAttribute("url", "BbsServlet?action=list&page="+session.getAttribute("BoardPage"));
 				rd = request.getRequestDispatcher("/login/alertMsg.jsp");
 				rd.forward(request, response);
 				break;
@@ -162,10 +150,9 @@ public class BbsServlet extends HttpServlet {
 			bDto = bDao.selectOne(id);
 			bDao.close();
 			
-			//수정시 보여주는 게시물 내용에는 <br> html코드를 없앤 후, 뿌려준다.
 			bDto.setContent(br2Lf(bDto.getContent()));
 			
-			request.setAttribute("bbs", bDto);
+			request.setAttribute("bbsOne", bDto);
 			rd = request.getRequestDispatcher("bbsUpdate.jsp");
 			rd.forward(request, response);
 			break;
@@ -193,7 +180,7 @@ public class BbsServlet extends HttpServlet {
 			
 			message = "다음과 같이 수정하였습니다. \\n" + bDto.toStringUpdate();
 			request.setAttribute("message", message);
-			request.setAttribute("url", "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"));
+			request.setAttribute("url", "BbsServlet?action=list&page="+session.getAttribute("BoardPage"));
 			rd = request.getRequestDispatcher("/login/alertMsg.jsp");
 			rd.forward(request, response);
 			bDao.close();
@@ -214,7 +201,7 @@ public class BbsServlet extends HttpServlet {
 				*/
 				message = "삭제권한이 없습니다. \\n";
 				request.setAttribute("message", message);
-				request.setAttribute("url", "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"));
+				request.setAttribute("url", "BbsServlet?action=list&page="+session.getAttribute("BoardPage"));
 				rd = request.getRequestDispatcher("/login/alertMsg.jsp");
 				rd.forward(request, response);
 				break;
@@ -224,7 +211,7 @@ public class BbsServlet extends HttpServlet {
 			bDao.deleteBbs(id);
 			message = "게시물 " + id + " (이)가 삭제 되었습니다.";
 			request.setAttribute("message", message);
-			request.setAttribute("url", "BbsServlet?action=pageButton&page="+session.getAttribute("BoardPage"));
+			request.setAttribute("url", "BbsServlet?action=list&page="+session.getAttribute("BoardPage"));
 			rd = request.getRequestDispatcher("/login/alertMsg.jsp");
 			rd.forward(request, response);
 			break;

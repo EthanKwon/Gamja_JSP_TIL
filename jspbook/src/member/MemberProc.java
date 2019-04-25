@@ -28,6 +28,15 @@ public class MemberProc extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ActionPost(request, response);		
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		ActionPost(request, response);
+	}
+	
+	protected void ActionPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		
@@ -50,21 +59,6 @@ public class MemberProc extends HttpServlet {
 		
 		switch(action) {
 		case "intoMain" :
-			request.setAttribute("page", 1);
-			session.setAttribute("MemberPage", 1);
-			
-			pageNum = 1;
-			
-			while(pageNum <= mDao.totalPage()) {
-				 pageLists.add("<a href='MemberProcServlet?action=pageButton&page="+pageNum+"'>"+pageNum+"</a>");
-				pageNum++;
-			}
-			request.setAttribute("pageList", pageLists);
-			rd = request.getRequestDispatcher("loginMain.jsp");
-			rd.forward(request, response);
-			break;
-			
-		case "pageButton" :
 			
 			int currPage = Integer.parseInt(request.getParameter("page"));
 			session.setAttribute("MemberPage", currPage);
@@ -72,7 +66,7 @@ public class MemberProc extends HttpServlet {
 			if(currPage>mDao.totalPage()) {
 				message = "마지막 페이지 입니다.";
 				request.setAttribute("message", message);
-				request.setAttribute("url", "MemberProcServlet?action=pageButton&page="+mDao.totalPage());
+				request.setAttribute("url", "MemberProcServlet?action=intoMain&page="+mDao.totalPage());
 				rd = request.getRequestDispatcher("alertMsg.jsp");
 				rd.forward(request, response);
 				mDao.close();
@@ -80,7 +74,7 @@ public class MemberProc extends HttpServlet {
 			} else if(currPage<1) {
 				message = "첫 페이지 입니다.";
 				request.setAttribute("message", message);
-				request.setAttribute("url", "MemberProcServlet?action=pageButton&page=1");
+				request.setAttribute("url", "MemberProcServlet?action=intoMain&page=1");
 				rd = request.getRequestDispatcher("alertMsg.jsp");
 				rd.forward(request, response);
 				mDao.close();
@@ -89,9 +83,13 @@ public class MemberProc extends HttpServlet {
 			
 			pageNum = 1;
 			while(pageNum <= mDao.totalPage()) {
-				pageLists.add("<a href='MemberProcServlet?action=pageButton&page="+pageNum+"'>"+pageNum+"</a>");
+				pageLists.add("<a href='MemberProcServlet?action=intoMain&page="+pageNum+"'>"+pageNum+"</a>");
 				pageNum++;
 			}
+			
+			List<MemberDTO> list = mDao.selectNameAllPage(currPage);
+			
+			request.setAttribute("memberList",list);
 			request.setAttribute("pageList", pageLists);
 			request.setAttribute("page", currPage);
 			rd = request.getRequestDispatcher("loginMain.jsp");
@@ -108,7 +106,7 @@ public class MemberProc extends HttpServlet {
 				*/
 				message = "수정권한이 없습니다. \\n";
 				request.setAttribute("message", message);
-				request.setAttribute("url", "MemberProcServlet?action=pageButton&page="+session.getAttribute("MemberPage"));
+				request.setAttribute("url", "MemberProcServlet?action=intoMain&page="+session.getAttribute("MemberPage"));
 				rd = request.getRequestDispatcher("alertMsg.jsp");
 				rd.forward(request, response);
 				break;
@@ -173,13 +171,13 @@ public class MemberProc extends HttpServlet {
 				session.setAttribute("memberId", id);
 				session.setAttribute("memberName", member.getName());
 				System.out.println(member.toString());
-				response.sendRedirect("MemberProcServlet?action=intoMain");
+				response.sendRedirect("MemberProcServlet?action=intoMain&page=1");
 			} else{
-				/*request.setAttribute("error", errorMessage);
-				RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
-				rd.forward(request, response);*/
-				String uri = "Login.jsp?error=" + URLEncoder.encode(errorMessage, "UTF-8");
-				response.sendRedirect(uri);
+				request.setAttribute("message", message);
+				request.setAttribute("url", "Login.jsp");
+				request.setAttribute("message", errorMessage);
+				rd = request.getRequestDispatcher("alertMsg.jsp");
+				rd.forward(request, response);
 			}
 			mDao.close();
 			break;
@@ -237,7 +235,7 @@ public class MemberProc extends HttpServlet {
 			
 			message = "다음과 같이 수정하였습니다. \\n" + member.toString();
 			request.setAttribute("message", message);
-			request.setAttribute("url", "loginMain.jsp");
+			request.setAttribute("url", "MemberProcServlet?action=intoMain&page="+ session.getAttribute("MemberPage"));
 			rd = request.getRequestDispatcher("alertMsg.jsp");
 			rd.forward(request, response);
 			mDao.close();
@@ -245,13 +243,7 @@ public class MemberProc extends HttpServlet {
 			
 		default:
 		}
-				
-	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
 	}
 
 }

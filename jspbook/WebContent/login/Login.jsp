@@ -12,18 +12,10 @@
 </style>
 </head>
 <body>
-<%
-	String error = (String)request.getParameter("error");
-	System.out.println(error);
-	if(error != null){
-		out.println("<script>alert('" + error + "')</script>");
-	}
-%>
 	<center> <br>
 	<h2>Member Login</h2> <br>
 	<hr>
 	<form name ="loginForm" action="MemberProcServlet?action=login" method=post>
-	<!--< form name="loginForm" action=/jspbook/login/LoginProcServlet method=post> -->
 		<label><span>ID : </span>
 			<input type ="text" name ="id" size="10"></label> <br><br>
 		<label><span>Password : </span>
