@@ -20,3 +20,13 @@
 ### JSTP 사용을 위한 라이브러리 : 필요한 lib 폴더의 파일
 ### MySQL 사용을 위한 라이브러리 : 필요한 lib 폴더의 파일
 
+
+---
+
+## JSTP를 편리하게 사용하기 위한 템플릿 설정
+
+### Web/JSP : taglib
+
+```
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+```
