@@ -13,8 +13,8 @@
 ### 19.04.25 : 표편 언어와 JSTP 사용해서 JSP View 파일과 Controller파일 나누기 및 textarea 폼 변경
 
 ---
-  
-  #
+<br>
+
 ## JSP 회원 프로그램 사용 라이브러리 목록
 
   
@@ -23,8 +23,8 @@
 * #### MySQL 사용을 위한 라이브러리 : 필요한 lib 폴더의 파일
 
 ---
-  
-  #
+<br>
+
 ## JSTP를 편리하게 사용하기 위한 템플릿 설정
   
     
@@ -34,5 +34,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 ```
 ---
-  
-#
+<br>
+
