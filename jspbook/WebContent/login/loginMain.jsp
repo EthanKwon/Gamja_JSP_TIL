@@ -24,7 +24,8 @@
 	<p>${memberName} 회원님이 로그인 하셨습니다. </p>
 	<hr>
 	<a href="/jspbook/bbs/BbsServlet?action=list&page=1">게시판</a> &nbsp; &nbsp;
-	<a href="/jspbook/twitter/twitterServlet?action=login">트윗</a>&nbsp; &nbsp;
+	<a href="/jspbook/twitter/twitterServlet?action=login">트윗</a>&nbsp; &nbsp;	
+	<a href="FileServlet?action=member">다운로드</a>&nbsp;&nbsp;
 	<a href="/jspbook/login/MemberProcServlet?action=logout">로그아웃</a> <br><br>
 	<table border="1" style="border-collapse:collapse;">
 	<thead>

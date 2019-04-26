@@ -1,5 +1,9 @@
 package bbs;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,9 +12,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import member.MemberDTO;
+
 
 
 public class BbsDAO {
+	private static final Logger LOG = LoggerFactory.getLogger(BbsDAO.class);
 	private Connection conn;
 	private static final String USERNAME = "javauser";
 	private static final String PASSWORD = "javapass";
@@ -23,6 +33,31 @@ public class BbsDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String prepareDownload() {
+		LOG.trace("");
+		StringBuffer sb = new StringBuffer();
+		List<BbsDTO> bList = selectNameAlldesc();
+		
+		try {
+			 BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("C:/Temp/bbsList.csv"),"MS949"));
+		
+			String head = "게시물번호,제목,내용,작성자,작성날짜\n";
+			sb.append(head);
+			fw.write(head);
+			LOG.debug("");
+			for(BbsDTO bbs : bList) {
+				String line = bbs.getId() + "," + bbs.getTitle() +"," + bbs.getContent() + "," + bbs.getName()+ "," + bbs.getDate()+"\n";
+				sb.append(line);
+				fw.write(line);
+			}
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 	
 	//삽입

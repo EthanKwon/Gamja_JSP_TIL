@@ -35,6 +35,7 @@
 	<hr>
 	<a href="/jspbook/login/MemberProcServlet?action=intoMain&page=1">메인화면</a> &nbsp;&nbsp;
 	<a href="/jspbook/twitter/twitterServlet?action=login">트윗</a>&nbsp; &nbsp;
+	<a href="/jspbook/login/FileServlet?action=bbs">다운로드</a>&nbsp; &nbsp;
 	<a href="/jspbook/login/MemberProcServlet?action=logout">로그아웃</a> <br><br>
 	<div>
 	<table border="1" style="border-collapse:collapse;">

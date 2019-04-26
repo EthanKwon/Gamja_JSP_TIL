@@ -1,5 +1,9 @@
 package member;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,9 +11,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MemberDAO {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(MemberDAO.class);
 	public static final int ID_PASSWORD_MATCH = 1;
 	public static final int ID_DOES_NOT_EXIST = 2;
 	public static final int PASSWORD_IS_WRONG = 3;
@@ -26,6 +35,32 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public String prepareDownload() {
+		LOG.trace("");
+		StringBuffer sb = new StringBuffer();
+		List<MemberDTO> mList = selectAll();
+		
+		try {
+			 BufferedWriter fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("C:/Temp/memberList.csv"),"MS949"));
+		
+			String head = "아이디,이름,생년월일,주소\n";
+			sb.append(head);
+			fw.write(head);
+			LOG.debug("");
+			for(MemberDTO member : mList) {
+				String line = member.getId() + "," + member.getName() +"," + member.getBirthday() + "," + member.getAddress()+"\n";
+				sb.append(line);
+				fw.write(line);
+			}
+			fw.flush();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
 	}
 	
 	//로그인 확인 메소드
@@ -145,6 +180,8 @@ public class MemberDAO {
 		}
 	}
 	
+	//--------------------------------------------------------------------------------------------------
+	// selectCondition메소드 이용
 	public List<MemberDTO> selectAll(){
 		String sql = "select * from info_member ;";
 		List<MemberDTO> memberList = selectCondition(sql);
@@ -199,6 +236,8 @@ public class MemberDAO {
 		}
 		return memberList;
 	}
+	
+	//--------------------------------------------------------------------------------------------------------------
 	
 	 public MemberDTO searchByNewMember() {
 	    	String sql = "select * from info_member order by id desc limit 1;";
