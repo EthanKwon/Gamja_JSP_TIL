@@ -16,17 +16,19 @@
 
 ## JSP 회원 프로그램 사용 라이브러리 목록
 
+
 * #### Aphche Tomcat 사용을 위한 라이브러리 :  해당 프로젝트의 buildPath를 통해 Add library로 설정할 수 있다.
 * #### JSTP 사용을 위한 라이브러리 : 필요한 lib 폴더의 파일
 * #### MySQL 사용을 위한 라이브러리 : 필요한 lib 폴더의 파일
 
-
 ---
 
 ## JSTP를 편리하게 사용하기 위한 템플릿 설정
-
+  
+  
 * #### Web/JSP : taglib
 
 ```
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 ```
+---
