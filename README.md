@@ -10,7 +10,9 @@
 ### 19.04.22 : JSP 내장객체 및 자바 회원가입 프로그램 servlet
 ### 19.04.23 : JSP 게시물 확인 기능 추가 (Servlet으로 구현)
 ### 19.04.24 : JSP 회원관리 및 게시물 확인 프로그램에 Paging 기능 추가
-### 19.04.25 : 표편 언어와 JSTP 사용해서 JSP View 파일과 Controller파일 나누기 및 textarea 폼 변경
+### 19.04.25 : 표현 언어와 JSTP 사용해서 JSP View 파일과 Controller파일 나누기 및 textarea 폼 변경
+### 19.05.23 : JUnit 사용하여 단위 테스트 연습
+### 19.05.24 : JSON 사용 방법
 
 ---
 <br>
@@ -25,7 +27,7 @@
 ---
 <br>
 
-## JSTP를 편리하게 사용하기 위한 템플릿 설정
+## JSTP를 사용하기 위한 템플릿 설정
   
     
 * #### Web/JSP : taglib
